@@ -30,5 +30,5 @@ make a key binding:
 ```el
 (require 'cider-browse-ns)
 (eval-after-load 'clojure-mode
-  (define-key clojure-mode-map (kbd "C-c M-b") 'cider-browse-ns-all))
+  '(define-key clojure-mode-map (kbd "C-c M-b") 'cider-browse-ns-all))
 ```
