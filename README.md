@@ -1,5 +1,11 @@
 # cider-browse-ns.el
 
+[Cider](https://github.com/clojure-emacs/cider) has awesome support for function documentation. 
+I wanted to extend that support with a way to easily browse available namespaces and the functions
+available within those namespaces.
+
+This is alpha software and whatnot. Hopefully you find it useful!
+
 ## Usage
 
 ### cider-browse-ns
