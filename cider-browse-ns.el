@@ -67,6 +67,7 @@
         (newline))
       (goto-char (point-min)))))
 
+;;;###autoload
 (defun cider-browse-ns-all ()
   "List all loaded namespaces in BUFFER."
   (interactive)
@@ -82,6 +83,7 @@
                                     names))
       (setq-local cider-browse-ns-current-ns nil))))
 
+;;;###autoload
 (defun cider-browse-ns (namespace)
   "List all NAMESPACE's vars in BUFFER."
   (interactive (list (completing-read "Switch to namespace: " (cider--all-ns))))
