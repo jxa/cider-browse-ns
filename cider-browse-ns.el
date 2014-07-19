@@ -42,7 +42,9 @@
 (require 'cider-interaction)
 
 (defvar cider-browse-ns-buffer "*Browse NS*")
-(defvar-local cider-browse-ns-current-ns nil)
+(defvar cider-browse-ns-current-ns nil)
+
+(make-variable-buffer-local 'cider-browse-ns-current-ns)
 
 (defvar cider-browse-ns-mode-map
   (let ((map (make-sparse-keymap)))
