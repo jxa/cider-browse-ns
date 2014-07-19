@@ -1,7 +1,11 @@
-;;; cider-browse-ns.el --- Browse Clojure Namespaces :
+;;; cider-browse-ns.el --- Browse Clojure namespaces with ease
 
 ;; Copyright © 2014 John Andrews
+
 ;; Author: John Andrews <john.m.andrews@gmail.com>
+;; Version: 0.1.0
+;; Package-Requires: ((cider "0.7.0"))
+;; Keywords: clojure, cider
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
