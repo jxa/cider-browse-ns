@@ -25,8 +25,9 @@ This is alpha software and whatnot. Hopefully you find it useful!
 
 ## Installation
 
-Packages will be coming soon. For now, install via git. Then, in your init file, require it and (optionally)
-make a key binding:
+A package is available from [MELPA](http://melpa.milkbox.net/#/cider-browse-ns) . Just type `M-x package-install <return> cider-browse-ns <return>`. If that doesn't work you most likely need to source melpa. Follow the instructions here http://melpa.milkbox.net/#/getting-started
+
+Then, in your init file, you can (optionally) make a key binding:
 
 ```el
 (require 'cider-browse-ns)
