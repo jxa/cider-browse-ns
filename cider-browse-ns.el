@@ -65,14 +65,17 @@
   (setq-local truncate-lines t)
   (setq-local cider-browse-ns-current-ns nil))
 
-(defun cider-browse-ns-list (buffer items)
-  "Reset BUFFER to contain elements of ITEMS."
+(defun cider-browse-ns-list (buffer title items)
+  "Reset BUFFER to contain elements of ITEMS.
+TITLE is displayed at the top and ITEMS are indented underneath."
   (with-current-buffer buffer
     (cider-browse-ns-mode)
     (let ((inhibit-read-only t))
       (erase-buffer)
+      (insert (propertize title 'font-lock-face 'cider-doc-strong-face))
+      (newline)
       (dolist (item items)
-        (insert item)
+        (insert "  " item)
         (newline))
       (goto-char (point-min)))))
 
@@ -87,10 +90,21 @@
                         (map name)
                         (sort))")))
       (cider-browse-ns-list (current-buffer)
+                            "All loaded namespaces"
                             (mapcar (lambda (name)
-                                      (propertize name 'font-lock-face 'font-lock-function-name-face))
+                                      (cider-browse-ns-properties name))
                                     names))
       (setq-local cider-browse-ns-current-ns nil))))
+
+(defvar cider-browse-ns-mouse-map (make-sparse-keymap))
+(define-key cider-browse-ns-mouse-map [mouse-1] 'cider-browse-ns-handle-mouse)
+
+(defun cider-browse-ns-properties (text)
+  "Decorate TEXT with a clickable keymap and function face."
+  (propertize text
+              'font-lock-face 'font-lock-function-name-face
+              'mouse-face 'highlight
+              'keymap cider-browse-ns-mouse-map))
 
 ;;;###autoload
 (defun cider-browse-ns (namespace)
@@ -98,11 +112,13 @@
   (interactive (list (completing-read "Switch to namespace: " (cider--all-ns))))
   (with-current-buffer (cider-popup-buffer cider-browse-ns-buffer t)
     (let* ((form "(sort (map name (keys (ns-publics (quote %s)))))")
-           (vars (cider-eval-and-get-value (format form namespace)))
-           (lines (cons (propertize namespace 'font-lock-face 'cider-doc-strong-face)
-                        (mapcar (lambda (var)
-                                  (format "  /%s" (propertize var 'font-lock-face 'font-lock-function-name-face))) vars))))
-      (cider-browse-ns-list (current-buffer) lines)
+           (vars (cider-eval-and-get-value (format form namespace))))
+      (cider-browse-ns-list (current-buffer)
+                            namespace
+                            (mapcar (lambda (var)
+                                      (format "/%s"
+                                              (cider-browse-ns-properties var)))
+                                    vars))
       (setq-local cider-browse-ns-current-ns namespace))))
 
 (defun cider-browse-ns-operate-on-point ()
@@ -111,9 +127,18 @@
   (let* ((bol (line-beginning-position))
          (eol (line-end-position))
          (line (buffer-substring-no-properties bol eol)))
-    (if (string-match "  /\\(.+\\)" line)
-        (cider-doc-lookup (format "%s/%s" cider-browse-ns-current-ns (match-string 1 line)))
-      (cider-browse-ns line))))
+    (cond
+     ((= 1 (line-number-at-pos))
+      'nothing-to-do)
+     ((string-match " +/\\(.+\\)" line)
+      (cider-doc-lookup (format "%s/%s" cider-browse-ns-current-ns (match-string 1 line))))
+     ('else
+      (cider-browse-ns (replace-regexp-in-string " " "" line))))))
+
+(defun cider-browse-ns-handle-mouse (event)
+  "Handle mouse click EVENT."
+  (interactive "e")
+  (cider-browse-ns-operate-on-point))
 
 (provide 'cider-browse-ns)
 
