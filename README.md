@@ -1,6 +1,11 @@
-# cider-browse-ns.el
+# cider-browse-ns.el (DEPRECATED)
 
-[Cider](https://github.com/clojure-emacs/cider) has awesome support for function documentation. 
+The latest snapshots of [Cider](https://github.com/clojure-emacs/cider) now come bundled with cider-browse-ns built-in!
+Use of this package is only recommended for versions of cider prior to 0.8.0
+
+## Description
+
+[Cider](https://github.com/clojure-emacs/cider) has awesome support for function documentation.
 I wanted to extend that support with a way to easily browse available namespaces and the functions
 available within those namespaces.
 
